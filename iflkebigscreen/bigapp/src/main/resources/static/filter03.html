@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>用户等级分析</title>
+</head>
+<!--引入依赖-->
+<script src="./js/echarts.min.js"></script>
+<script src="./js/jquery.js"></script>
+<body>
+<!--下拉框-->
+<select id="grade">
+    <option>--请选择用户等级--</option>
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+    <option>4</option>
+    <option>5</option>
+</select>
+<a href="./index.html">点击回到大屏</a>
+<div id="big_box" style="width: 1300px;height: 1000px">
+    <div id="box01" style="width: 600px;height: 400px"></div>
+    <div id="box02" style="width: 600px;height: 400px;margin-left: 800px;margin-top: -330px"></div>
+</div>
+
+<script type="text/javascript">
+    <!--图一-->
+    var myChart1 = echarts.init(document.getElementById('box01'));
+    var option1 = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                lineStyle: {
+                    color: '#57617B'
+                }
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: ['安徽', '山西', '江苏','天津','北京','上海','浙江','内蒙古','河北']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: [74952, 65797, 54686,39713,33330,27696,19187,12582,10108],
+                type: 'bar',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(180, 180, 180, 0.1)'
+                }
+            }
+        ]
+    };
+    myChart1.setOption(option1);
+
+    //图二
+    var myChart2 = echarts.init(document.getElementById('box02'));
+    var option2 = {
+        title: {
+            text: '用户等级购买个数',
+            subtext: 'Fake Data',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        series: [
+            {
+                name: 'Access From',
+                type: 'pie',
+                radius: '50%',
+                data: [
+                    { value: 8, name: '荣耀10青春版 幻彩渐变 2400万AI自拍 全网通版4GB+64GB 渐变蓝 移动联通电信4G全面屏手机 双卡双待' },
+                    { value: 7, name: '荣耀10 GT游戏加速 AIS手持夜景 6GB+64GB 幻影蓝全网通 移动联通电信' },
+                    { value: 6, name: 'TCL 55A950C 55英寸32核人工智能 HDR曲面超薄4K电视金属机身（枪色）' },
+                    { value: 5, name: '小米（MI） 小米路由器4 双千兆路由器 无线家用穿墙1200M高速双频wifi 千兆版 千兆端口光纤适用' },
+                    { value: 5, name: '小米（MI）电视 55英寸曲面4K智能WiFi网络液晶电视机4S L55M5-AQ 小米电视4S 55英寸 曲面' },
+                    { value: 4, name: '小米Play 流光渐变AI双摄 4GB+64GB 梦幻蓝 全网通4G 双卡双待 小水滴全面屏拍照游戏智能手机' },
+                    { value: 4, name: '北纯 精制 黄小米（小黄米 月子米 小米粥 粗粮杂粮 大米伴侣）2.18kg' },
+                    { value: 2, name: 'Apple iPhone XS Max (A2104) 256GB 深空灰色 移动联通电信4G手机 双卡双待' }
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    myChart2.setOption(option2);
+
+    //获取下拉框dom对象
+    var gradeel = document.getElementById('grade');
+    $('#grade').change(function(){
+        // alert(gradeel.value)
+        $.ajax({
+            type: 'get',
+            url: 'http://localhost:8080/filter03/grade?gradeNum=' + gradeel.value,
+            contentType: 'application/json; charset=UTF-8',
+            dataType: 'json',
+            success:function (rep){
+                console.log(rep)
+             myChart1.setOption({
+                 tooltip: {
+                     trigger: 'axis',
+                     axisPointer: {
+                         lineStyle: {
+                             color: '#57617B'
+                         }
+                     }
+                 },
+                 xAxis: {
+                     type: 'category',
+                     data: rep.reData.bar_x
+                 },
+                 yAxis: {
+                     type: 'value'
+                 },
+                 series: [
+                     {
+                         data: rep.reData.bar_y,
+                         type: 'bar',
+                         showBackground: true,
+                         backgroundStyle: {
+                             color: 'rgba(180, 180, 180, 0.1)'
+                         }
+                     }
+                 ]
+             })
+             myChart2.setOption({
+                 title: {
+                     text: '用户等级购买个数',
+                     subtext: 'Fake Data',
+                     left: 'center'
+                 },
+                 tooltip: {
+                     trigger: 'item'
+                 },
+                 series: [
+                     {
+                         name: 'Access From',
+                         type: 'pie',
+                         radius: '50%',
+                         data: rep.reData.pie_data,
+                         emphasis: {
+                             itemStyle: {
+                                 shadowBlur: 10,
+                                 shadowOffsetX: 0,
+                                 shadowColor: 'rgba(0, 0, 0, 0.5)'
+                             }
+                         }
+                     }
+                 ]
+             })
+            }
+        })
+
+    })
+</script>
+</body>
+<html>

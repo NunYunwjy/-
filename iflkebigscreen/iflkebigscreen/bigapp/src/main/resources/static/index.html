@@ -1,0 +1,189 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <!--引入依赖-->
+    <script type="text/javascript" src="./js/jquery.js"></script>
+    <script type="text/javascript" src="./js/echarts.min.js"></script>
+    <script type="text/javascript" src="./js/js.js"></script>
+    <link rel="stylesheet" href="css/comon0.css">
+</head>
+
+<body>
+    <div style="background:#000d4a url(images/bg.jpg) center top;">
+        <div class="loading">
+            <div class="loadbox"><img src="picture/loading.gif"> 页面加载中...</div>
+        </div>
+
+        <div class="back"></div>
+
+        <div class="head">
+            <div class="weather"><span id="showTime"></span></div>
+            <h1>电商当日数据分析平台</h1>
+        </div>
+
+        <div class="mainbox">
+            <ul class="clearfix">
+                <!--    第一个有序列表       -->
+                <li>
+                    <div class="boxall" style="height:400px;">
+                        <div class="alltitle">商品库存</div>
+                        <div class="navboxall" id="echart5"></div>
+                    </div>
+
+                    <div class="boxall" style="height:260px;">
+                        <div class="alltitle"><a href="./filter02.html">区域销售占比</a></div>
+                        <div class="navboxall">
+                            <div class="wrap" id="level_echars">
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="boxall" style="height:260px;">
+                        <div class="alltitle">各品牌购买数占比</div>
+
+                        <div class="navboxall" id="echart1"></div>
+                    </div>
+                </li>
+
+
+                <li>
+
+                    <div class="boxall" style="height:230px">
+                        <div class="clearfix navboxall" style="height: 100%">
+                            <div class="pulll_left num">
+                                <div class="numbt">总销售额<span>(单位：元)</span></div>
+                                <div class="numtxt">1673099</div>
+                            </div>
+                            <div class="pulll_right zhibiao">
+                                <div class="zb2"><span>男性消费占比</span><div id="zb2"></div></div>
+                                <div class="zb3"><span>女性消费占比</span><div id="zb3"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--                左一盒子-->
+                    <div class="boxall" style="height:350px">
+                        <div class="alltitle"><a href="./filter01.html">性别:最高/最低消费</a></div>
+                        <div class="navboxall" id="echart4"></div>
+                    </div>
+                    <div class="boxall" style="height:340px">
+                        <div class="alltitle">等级:最高/最低消费</div>
+                        <div class="navboxall" id="echart3"></div>
+                    </div>
+                </li>
+                <li>
+                    <div class="boxall" style="height:300px">
+                        <div class="alltitle">男性热销商品榜</div>
+                        <div class="navboxall">
+                            <table class="table1" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr>
+                                    <th scope="col">排名</th>
+                                    <th scope="col">品牌</th>
+                                    <th scope="col">销售额</th>
+                                    <th scope="col">购买率</th>
+                                </tr>
+                                <tr>
+                                    <td><span>1</span></td>
+                                    <td>apple</td>
+                                    <td>338200<br></td>
+                                    <td>5%<br></td>
+                                </tr>
+                                <tr>
+                                    <td><span>2</span></td>
+                                    <td>荣耀</td>
+                                    <td>264025</td>
+                                    <td>16%</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span>3</span></td>
+                                    <td>小米</td>
+                                    <td>210858</td>
+                                    <td>17%</td>
+                                </tr>
+                                <tr>
+                                    <td><span>4</span></td>
+                                    <td>tcl</td>
+                                    <td>129519</td>
+                                    <td>5%</td>
+                                </tr>
+                                <tr>
+                                    <td><span>5</span></td>
+                                    <td>北纯</td>
+                                    <td>12416</td>
+                                    <td>7%</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="boxall" style="height: 300px">
+                        <div class="alltitle">女性商品热销榜</div>
+                        <div class="navboxall">
+                            <table class="table1" width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr>
+                                    <th scope="col">排名</th>
+                                    <th scope="col">品牌</th>
+                                    <th scope="col">销售额</th>
+                                    <th scope="col">购买率</th>
+                                </tr>
+                                <tr>
+                                    <td><span>1</span></td>
+                                    <td>荣耀</td>
+                                    <td>308850<br></td>
+                                    <td>19%<br></td>
+                                </tr>
+                                <tr>
+                                    <td><span>2</span></td>
+                                    <td>小米</td>
+                                    <td>165832</td>
+                                    <td>15%</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span>3</span></td>
+                                    <td>apple</td>
+                                    <td>151300</td>
+                                    <td>2%</td>
+                                </tr>
+                                <tr>
+                                    <td><span>4</span></td>
+                                    <td>tcl</td>
+                                    <td>79704</td>
+                                    <td>3%</td>
+                                </tr>
+                                <tr>
+                                    <td><span>5</span></td>
+                                    <td>北纯</td>
+                                    <td>12395</td>
+                                    <td>9%</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="boxall" style="height:320px">
+                        <div class="alltitle"><a href="./filter03.html">用户等级销售额占比</a></div>
+                        <div class="navboxall" id="echart2"></div>
+                    </div>
+
+
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+</body>
+</html>

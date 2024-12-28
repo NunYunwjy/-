@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdjj.bigapp.mapper.SexAmountMapper">
+    <!--
+    public List<SexInfoCommentPOjo> selectMaxinfoM();
+    男生最大消费
+    -->
+    <select id="selectMaxinfoM" resultType="SexInfoCommentPOjo">
+        select province_name,sku_name,sum(sku_num) as 'area_count',
+               sum(sku_num)*44500 as 'area_amount'
+        from ads_sex_order_tb
+        where order_amount='44500' and user_gender='M'
+        group by province_name,sku_name
+    </select>
+    <!--
+    public List<SexInfoCommentPOjo> selectMinInfoM();
+    男生最小消费
+    -->
+    <select id="selectMinInfoM" resultType="SexInfoCommentPOjo">
+        select province_name,sku_name,sum(sku_num) as 'area_count',
+               sum(sku_num)*145 as 'area_amount'
+        from ads_sex_order_tb
+        where order_amount='145' and user_gender='M'
+        group by province_name,sku_name
+    </select>
+    <!--
+    public List<SexInfoCommentPOjo> selectMaxinfoF();
+    -->
+    <select id="selectMaxinfoF" resultType="SexInfoCommentPOjo">
+        select province_name,sku_name,sum(sku_num) as 'area_count',
+               sum(sku_num)*44500 as 'area_amount'
+        from ads_sex_order_tb
+        where order_amount='44500' and user_gender='F'
+        group by province_name,sku_name
+    </select>
+
+    <!--
+    public List<SexInfoCommentPOjo> selectMinInfoF();
+    -->
+    <select id="selectMinInfoF" resultType="SexInfoCommentPOjo">
+        select province_name,sku_name,sum(sku_num) as 'area_count',
+               sum(sku_num)*222 as 'area_amount'
+        from ads_sex_order_tb
+        where order_amount='222' and user_gender='F'
+        group by province_name,sku_name
+    </select>
+</mapper>

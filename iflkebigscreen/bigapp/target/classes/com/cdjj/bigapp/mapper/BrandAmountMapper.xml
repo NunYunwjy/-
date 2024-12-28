@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdjj.bigapp.mapper.BrandAmountMapper">
+    <!--
+   public List<BrandinfoCommentPojo> selectBrandinfoByName(String inPut);
+    -->
+    <select id="selectBrandinfoByName" resultType="BrandinfoCommentPojo">
+        select province_name
+             ,sum(order_amount) as 'province_amount'
+             ,sum(sku_num) as 'province_count'
+        from ads_sex_order_tb
+        where tm_name like concat('%',#{inPut},'%')
+        group by province_name
+    </select>
+</mapper>

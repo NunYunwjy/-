@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>各地区品牌详细</title>
+</head>
+<!--引入依赖-->
+<script src="./js/echarts.min.js"></script>
+<script src="./js/jquery.js"></script>
+<body>
+<input id='indata' placeholder="请输入品牌名称进行搜索"/>
+<button id='search'>查询</button>
+<a href="./index.html">点击回到大屏</a>
+<br/><br/>
+<div style="padding-right: 100px;">
+    <table border="1" cellspacing="0">
+        <tr>
+            <th>序号</th>
+            <th>品牌名称</th>
+        <tr>
+            <td>1</td>
+            <td>北纯</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>荣耀</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>tcl</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>小米</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>apple</td>
+        </tr>
+    </table>
+</div>
+<!--第一个容器盒子-->
+<div id="area_count" style="width: 500px;height: 500px;padding-left: 100px;margin-top: -150px;float: left;"></div>
+<!--第二个容器盒子-->
+<div id="area_amount" style="width: 500px;height: 500px;margin-left:100px ;margin-top:-150px;float: left;"></div>
+<script type="text/javascript">
+    var myChart = echarts.init(document.getElementById('area_count'));
+    // 指定图表的配置项和数据
+    option = {
+        title: {
+            text: '各地区品牌个数占比',
+            subtext: 'Fake Data',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left'
+        },
+        series: [
+            {
+                name: 'Access From',
+                type: 'pie',
+                radius: '50%',
+                data: [
+                    { value: 27, name: '上海' },
+                    { value: 20, name: '浙江' },
+                    { value: 14, name: '北京' },
+                    { value: 26, name: '天津' },
+                    { value: 5, name: '河北' },
+                    { value: 5, name: '安徽' },
+                    { value: 20, name: '山西' },
+                    { value: 5, name: '内蒙古' },
+                    { value: 2, name: '江苏' },
+                ],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    myChart.setOption(option);
+    myChart.setOption(option);
+
+    var myChart02 = echarts.init(document.getElementById('area_amount'));
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                lineStyle: {
+                    color: '#57617B'
+                }
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: ['上海', '浙江', '北京', '天津', '河北', '安徽', '山西','内蒙古','江苏']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: [5598,4286,2921,5255, 725, 725, 3791, 1220, 290],
+                type: 'bar'
+            }
+        ]
+    };
+    myChart02.setOption(option);
+
+    //输入框的dom对象
+    var inputel = document.getElementById("indata");
+    $('#search').click(function(){
+        $.ajax({
+            type: 'get',
+            url: 'http://localhost:8080/filter02/brand?inputMsg=' + inputel.value,
+            contentType: 'application/json; charset=UTF-8',
+            dataType: 'json',
+            success: function (rep) {
+                console.log(rep);
+                myChart.setOption({
+                    title: {
+                        text: '各地区品牌个数占比',
+                        subtext: 'Fake Data',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    series: [
+                        {
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: '50%',
+                            data:rep.reData.province_count ,
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                })
+                myChart02.setOption({
+                    xAxis: {
+                        type: 'category',
+                        data: rep.reData.province_name
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: rep.reData.province_amount,
+                            type: 'bar'
+                        }
+                    ]
+                })
+                if(rep.reData.province_name.length==0){
+                    alert("你输入的品牌名有误，请合照提示重新输入！")
+                    inputel.value="";
+                }
+            }
+        })
+    })
+</script>
+</body>
+</html>

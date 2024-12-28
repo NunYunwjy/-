@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>男女性别详细分析</title>
+    <!--引入echarts依赖-->
+    <script src="./js/echarts.min.js"></script>
+    <!--引入Jquer依赖-->
+    <script src="./js/jquery.js"></script>
+</head>
+<body>
+<select id="gender">
+    <option>--请选择分析性别--</option>
+    <option>男生</option>
+    <option>女生</option>
+</select>
+<select id="innum">
+    <option>最大值</option>
+    <option>最小值</option>
+</select>
+<a href="./index.html">点击回到大屏</a>
+<!--第一个div地区商品购买个数柱状图-->
+<br/>
+<!--动态标题-->
+<div id="area_text" style="padding-left: 100px;padding-top: 10px;margin-bottom: -20px;"></div>
+<!--容器01-->
+<div id="area_count" style="width: 500px;height: 500px;padding-top:20px ;float: left;"></div>
+<!--容器02-->
+<div id=amount_count style="width: 600px;height: 600px;margin-left: 300px;float: left;"></div>
+<!--容器03-->
+<div id="area_amount" style="height: 250px;width: 900px;padding-left: 400px; "></div>
+
+<script type="text/javascript">
+    //筛选框dom对象
+    var genderel = document.getElementById("gender");
+    var innumel = document.getElementById("innum");
+    //动态补值dom对象
+    var areatext = document.getElementById("area_text");
+
+    //定义第一个容器需要值
+    var cargo_name=['Apple iPhone XS Max (A2104) 256GB 深空灰色 移动联通电信4G手机 双卡双待'];
+    var area_name=['安徽', '北京', '山西'];
+    var area_value=[10,5,5];
+    //获取第一个div盒子容器对象,并初始化容器对象。
+    var myChart = echarts.init(document.getElementById('area_count'));
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                lineStyle: {
+                    color: '#57617B'
+                }
+            }
+        },
+        "legend": {
+
+            "data": cargo_name,
+            "top": "0%",
+            "textStyle": {
+                "color": "rgba(255,255,255,0.9)"//图例文字
+            }
+        },
+        xAxis: {
+            type: 'category',
+            data: area_name
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                name:cargo_name,
+                data: area_value,
+                type: 'bar',
+                showBackground: true,
+                backgroundStyle: {
+                    color: 'rgba(180, 180, 180, 0.2)'
+                }
+            }
+        ]
+    };
+    myChart.setOption(option);
+
+    //定义第二个容器对象需要值
+    var pie_value=[{ name: 'Apple iPhone XS Max (A2104) 256GB 深空灰色 移动联通电信4G手机 双卡双待',value:93 },{ name: '其它',value:7 }];
+    //定义第二个容器对象
+    var myChart02 = echarts.init(document.getElementById('amount_count'));
+    option = {
+        title: {
+            text: '最高/低销售额总比',
+            subtext: 'Fake Data',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left'
+        },
+        series: [
+            {
+                name: 'Access From',
+                type: 'pie',
+                radius: '50%',
+                data:pie_value ,
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    myChart02.setOption(option);
+
+    //定义第三个容器对象需要值
+    var area_name03=['安徽', '北京', '山西'];
+    var area_value03=[445000.0, 222500.0, 222500.0];
+    //定义第三个容器对象
+    var myChart03 = echarts.init(document.getElementById('area_amount'));
+    option = {
+        title: {
+            text: '性别地区总销售额',
+            subtext: 'Amount Data',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left'
+        },
+        xAxis: {
+            type: 'category',
+            data: area_name03
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: area_value03,
+                type: 'line'
+            }
+        ]
+    };
+    myChart03.setOption(option);
+
+    $('#gender').change(function(){
+        var genderdata = genderel.value
+        var inumdata = innumel.value
+        areatext.innerHTML=genderel.value+'<span>组地区购买个数</span>';
+        $.ajax({
+            type: 'get',
+            url: 'http://localhost:8080/filter01/gender?gender=' + genderdata + '&msg=' + inumdata,
+            contentType: 'application/json; charset=UTF-8',
+            dataType: 'json',
+            success: function (rep) {
+                console.log(rep);
+                myChart.setOption({
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            lineStyle: {
+                                color: '#57617B'
+                            }
+                        }
+                    },
+                    "legend": {
+                        "data": rep.reData.cargo_name,
+                        "top": "0%",
+                        "textStyle": {
+                            "color": "rgba(255,255,255,0.9)"//图例文字
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: rep.reData.area_name
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name:cargo_name,
+                            data: rep.reData.area_value,
+                            type: 'bar',
+                            showBackground: true,
+                            backgroundStyle: {
+                                color: 'rgba(180, 180, 180, 0.2)'
+                            }
+                        }
+                    ]
+                });
+                myChart02.setOption( {
+                    title: {
+                        text: '销售额总比',
+                        subtext: 'Fake Data',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    series: [
+                        {
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: '50%',
+                            data:rep.reData.pie_value ,
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                });
+                myChart03.setOption({
+                    title: {
+                        text: '性别地区总销售额',
+                        subtext: 'Amount Data',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: rep.reData.area_name03
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: rep.reData.area_value03,
+                            type: 'line'
+                        }
+                    ]
+                });
+            }
+        })
+
+    })
+    $('#innum').change(function(){
+        var genderdata = genderel.value
+        var inumdata = innumel.value
+        areatext.innerHTML=genderel.value+'<span>组地区购买个数</span>';
+        $.ajax({
+            type: 'get',
+            url: 'http://localhost:8080/filter01/amount?gender=' + genderdata + '&msg=' + inumdata,
+            contentType: 'application/json; charset=UTF-8',
+            dataType: 'json',
+            success: function (rep) {
+                console.log(rep);
+                myChart.setOption({
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            lineStyle: {
+                                color: '#57617B'
+                            }
+                        }
+                    },
+                    "legend": {
+                        "data": rep.reData.cargo_name,
+                        "top": "0%",
+                        "textStyle": {
+                            "color": "rgba(255,255,255,0.9)"//图例文字
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: rep.reData.area_name
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name:cargo_name,
+                            data: rep.reData.area_value,
+                            type: 'bar',
+                            showBackground: true,
+                            backgroundStyle: {
+                                color: 'rgba(180, 180, 180, 0.2)'
+                            }
+                        }
+                    ]
+                });
+                myChart02.setOption( {
+                    title: {
+                        text: '销售额总比',
+                        subtext: 'Fake Data',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    series: [
+                        {
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: '50%',
+                            data:rep.reData.pie_value ,
+                            emphasis: {
+                                itemStyle: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                });
+                myChart03.setOption({
+                    title: {
+                        text: '性别地区总销售额',
+                        subtext: 'Amount Data',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: rep.reData.area_name03
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: rep.reData.area_value03,
+                            type: 'line'
+                        }
+                    ]
+                });
+            }
+        })
+
+    })
+
+</script>
+</body>
+</html>
